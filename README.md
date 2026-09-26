@@ -1,6 +1,6 @@
 # awesome-bip39
 
-**Meaningful BIP39 mnemonics** — all 19 of them. Every one reads as an actual sentence, and every one
+**Meaningful BIP39 mnemonics** — all 35 of them. Every one reads as an actual sentence, and every one
 is fully **valid**: all 12 words come from the official BIP39 wordlist, and the 4-bit SHA-256 checksum
 embedded in the word indices is consistent with the entropy. Any standard BIP39 implementation will
 import them.
@@ -30,7 +30,7 @@ restore a wallet that holds real funds.
 ## Quick Check
 
 ```bash
-python3 verify.py                 # validates all 38 listings (19 mnemonics, each in both files)
+python3 verify.py                 # validates all 70 listings (35 mnemonics, each in both files)
 python3 verify.py --seed          # also prints the BIP39 seed (PBKDF2-HMAC-SHA512, 2048 rounds)
 python3 verify.py -m "your twelve words here …"                   # validate one, English wordlist
 python3 verify.py --lang zh-Hans -m "努力向上才能令人生都精彩"   # validate one, Simplified Chinese
@@ -50,7 +50,7 @@ lengths), covering checksum validation, entropy recovery and seed derivation.
 
 | File | Purpose |
 |---|---|
-| `README.md` | This file, in English. All 19 mnemonics. |
+| `README.md` | This file, in English. All 35 mnemonics. |
 | `README.zh-CN.md` | 中文译本,内容与本文件相同 |
 | `verify.py` | The multi-language validator |
 | `selftest.py` | Official-vector regression test |
@@ -74,7 +74,7 @@ lengths), covering checksum validation, entropy recovery and seed derivation.
 
 ## The Mnemonics
 
-### Part 1 — English (8)
+### Part 1 — English (19)
 
 <!-- lang: en -->
 
@@ -167,7 +167,121 @@ time will teach you lesson that also very old age can tell
 
 entropy `e25f677a7f9807bfc1d7979a009883ef` · checksum `0110`
 
-### Part 2 — Chinese Simplified (11)
+#### 9. Perseverance
+
+```
+hard work can turn you brave when you never say you quit
+```
+
+> Hard work can turn you brave, as long as you never say "quit".
+
+entropy `693fb083f56ff236be8ff99517fffcd7` · checksum `1110`
+
+#### 10. Patience
+
+```
+one small water drop over long year must wear away old stone
+```
+
+> One small drop of water, over a long year, must wear away even old stone.
+
+entropy `9ab98fdf21b9df07bfbc90f8620e686b` · checksum `0010`
+
+#### 11. Kindness
+
+```
+one kind word can turn one more angry heart into warm smile
+```
+
+> One kind word can turn one more angry heart into a warm smile.
+
+entropy `9aaf53f5907ead3563f0476a4ebbdce6` · checksum `0101`
+
+#### 12. Wisdom
+
+```
+one old man can tell young boy story that you never forget
+```
+
+> An old man can tell a young boy a story that he will never forget.
+
+entropy `9ab3421b107dedfe86aeb4dfffe6542d` · checksum `1010`
+
+#### 13. Hope
+
+```
+one long night will become short when you have one good dream
+```
+
+> One long night becomes short once you have one good dream.
+
+entropy `9ab07a567d913f8dbe8ff969b35591a1` · checksum `0100`
+
+#### 14. Loyalty
+
+```
+one true friend will stay near you until nothing else can stay
+```
+
+> One true friend stays near you until nothing else can stay.
+
+entropy `9abd2973fd9d4f273fcfd7196c90483ea` · checksum `0111`
+
+#### 15. Warmth
+
+```
+one warm smile can make one very sad young face bright again
+```
+
+> One warm smile can make one very sad young face bright again.
+
+entropy `9abee732907869357cbdedff4a307002` · checksum `0101`
+
+#### 16. Composure
+
+```
+one calm heart will wait long time until one warm autumn day
+```
+
+> One calm heart will wait a long time, right up to one warm autumn day.
+
+entropy `9aa411a97d9f6707b897719abee43e9c` · checksum `0000`
+
+#### 17. Growth
+
+```
+one long road can make you strong also kind also very wise
+```
+
+> One long road can make you strong, also kind, also very wise.
+
+entropy `9ab07aeb907869fe75c83a7a80ebcbfe` · checksum `0011`
+
+> **Note** — `and` and `to` are both missing from the English wordlist, so the three adjectives can
+> only be chained by repeating `also`. An earlier draft ended `... also very brave old`, which
+> checksummed but read badly; `wise` was the replacement that kept the sentence intact.
+
+#### 18. Learning
+
+```
+young mind can learn much more when you hold one great book
+```
+
+> A young mind can learn much more when you hold one great book.
+
+entropy `ff519c83bf69111fbe8ff96c9355988c` · checksum `1100`
+
+#### 19. Morning
+
+```
+morning light come over green hill then one young girl will sing
+```
+
+> Morning light comes over the green hill, then one young girl will sing.
+
+entropy `8ff030b84ef664d7780cd5ff4c4bece4` · checksum `1010`
+
+### Part 2 — Chinese Simplified (16)
 
 <!-- lang: zh-Hans -->
 
@@ -313,6 +427,60 @@ entropy `1b28847015d0920997e1591c850c0408` · checksum `1100`
 > **Note** — 遥 is not in the wordlist, so only 远 is available. The proverb 路遥知马力,日久见人心
 > is therefore one character short.
 
+#### 12. 善良 / Kindness
+
+```
+善良的人福气总是不会太坏
+```
+
+> A kind person is never short of good fortune.
+
+entropy `65aaa4000086d826463802008088da28` · checksum `0101`
+
+#### 13. 付出 / Effort
+
+```
+所有的努力付出必将有回报
+```
+
+> Every effort and contribution will be rewarded.
+
+entropy `076018003f80932380e8fa1c40187e95` · checksum `0000`
+
+#### 14. 强大 / Strength
+
+```
+真正的强大是内心更加安定
+```
+
+> Real strength is a calmer heart.
+
+entropy `28622c000f30160084488c26815c9f03` · checksum `0111`
+
+#### 15. 信念 / Inner Light
+
+```
+心里有光的人的确从不迷路
+```
+
+> Someone who carries light inside truly never loses their way.
+
+entropy `11812803107000020001580c2013148d` · checksum `1001`
+
+#### 16. 陪伴 / Company
+
+```
+陪伴都是最长情的告白礼物
+```
+
+> Companionship is the longest-lasting confession, and a gift in itself.
+
+entropy `eab8842c8021603445700042a4e6b705` · checksum `0100`
+
+> **Note** — 就是 ("is exactly") fails the checksum here, so the plainer 都是 had to be used. The
+> trailing 礼物 is likewise not a free choice: 陪伴是最长情的告白 alone is 11 characters, one short
+> of the 12 a BIP39 Chinese mnemonic requires.
+
 ---
 
 ## Why the English Sentences Sound Awkward
@@ -334,8 +502,9 @@ The BIP39 wordlist was not designed for prose. There are three hard constraints:
 3. **Evocative words are scarce.** `amber`, `emerge`, `youth`, `gospel`, `wisdom` occupy a handful of
    the 2048 slots between them.
 
-The result is telegraphic, translated-sounding clauses rather than natural English. Items 1, 2, 5 and
-6 above read reasonably well; items 3 and 4 have visible grammatical flaws, flagged in place.
+The result is telegraphic, translated-sounding clauses rather than natural English. Items 1, 2, 5, 6
+and most of 7–19 read reasonably well; items 3, 4 and 17 have visible grammatical flaws, flagged
+in place.
 
 ## Why Chinese Is Easier
 
@@ -360,7 +529,7 @@ leaving the sentence one character short.
 
 - The words were chosen by hand. A script only checked word membership and the 4 checksum bits; it
   never took part in writing the sentences.
-- The entropy is *derived from* the word order, not random. These 19 mnemonics cover 19 points out
+- The entropy is *derived from* the word order, not random. These 35 mnemonics cover 35 points out
   of 2048¹² possible combinations per wordlist, and carry **no cryptographic randomness**.
 - A hand-picked 12-word set has only a **1 in 16** chance of carrying a correct checksum. Many of
   these were found by trying synonyms until one fit — `doubt` → `worry`, `peak` → `mountain`,
