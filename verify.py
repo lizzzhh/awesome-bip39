@@ -2,15 +2,15 @@
 """校验 BIP39 助记词(多语言) / BIP39 mnemonic validator (multi-language).
 
 用法 / Usage:
-    python3 verify.py                        # 校验 README.md 里全部语言的助记词
-    python3 verify.py --lang zh-Hans          # 只校验简体中文
+    python3 verify.py                        # 校验 README*.md 里全部语言的助记词
+    python3 verify.py --lang zh-Hans          # 只校验简体中文(用于 -m)
     python3 verify.py -m "abandon abandon …"  # 校验任意一条(按 --lang 选词表)
     python3 verify.py --seed                 # 顺便输出 BIP39 种子
     python3 verify.py --list-languages
 
 退出码 / Exit code: 0 = 全部通过, 1 = 有失败, 2 = 环境问题
 
-README.md 里每条助记词前用 `<!-- lang: xx -->` 标注语言,本工具据此分组。
+扫描本目录所有 `README*.md`,每条助记词前用 `<!-- lang: xx -->` 标注语言,据此选词表分组。
 仅依赖标准库。 / Standard library only.
 """
 
@@ -46,7 +46,11 @@ LANGS: dict[str, tuple[str, str, str]] = {
 }
 
 VALID_LENGTHS = (12, 15, 18, 21, 24)
-LANG_MARKER = re.compile(r"<!--\s*lang:\s*([\w-]+)\s*-->")
+# 只认 LANGS 里真实存在的语言代码,这样文档正文里提到 `<!-- lang: xx -->` 之类的
+# 举例文字不会被误当成标记 / only real language codes count as markers
+LANG_MARKER = re.compile(
+    r"<!--\s*lang:\s*(" + "|".join(re.escape(k) for k in sorted(LANGS, key=len, reverse=True)) + r")\s*-->"
+)
 CODE_BLOCK = re.compile(r"^```[^\n]*\n(.*?)^```", re.M | re.S)
 PBKDF2_ROUNDS = 2048
 
@@ -180,18 +184,21 @@ def main() -> int:
             print(f"       seed={to_seed(args.mnemonic.strip(), args.passphrase)}")
         return 0 if ok else 1
 
-    readme = HERE / "README.md"
-    if not readme.exists():
-        print(f"缺少 {readme} / missing README.md", file=sys.stderr)
+    readmes = sorted(HERE.glob("README*.md"))
+    if not readmes:
+        print("找不到 README*.md / no README*.md found", file=sys.stderr)
         return 2
-    items = harvest(readme.read_text(encoding="utf-8"), None)
+    items: list[tuple[str, str, str]] = []
+    for path in readmes:
+        for lang, m in harvest(path.read_text(encoding="utf-8"), None):
+            items.append((lang, m, path.name))
     if not items:
-        print("README.md 里没找到助记词 / no mnemonics found", file=sys.stderr)
+        print("README*.md 里没找到助记词 / no mnemonics found", file=sys.stderr)
         return 2
 
     loaded: dict[str, list[str]] = {}
     try:
-        for lang in sorted({l for l, _ in items}):
+        for lang in sorted({l for l, _m, _f in items}):
             loaded[lang] = ensure_wordlist(lang, download=not args.no_download)
     except EnvError as exc:
         print(f"环境错误 / env error: {exc}", file=sys.stderr)
@@ -201,10 +208,10 @@ def main() -> int:
         print(f"词表 / wordlist : {LANGS[lang][0]}  (2048 words, SHA-256 verified)")
 
     passed = 0
-    for lang, m in items:
+    for lang, m, src in items:
         ok, reason, ent, cs = check(m, loaded[lang], lang)
         passed += ok
-        print(("OK   " if ok else "FAIL ") + m)
+        print(("OK   " if ok else "FAIL ") + m + f"   [{src}]")
         print(f"       {f'entropy={ent.hex()} checksum={cs}' if ok else reason}")
         if args.seed and ok:
             print(f"       seed={to_seed(m, args.passphrase)}")
